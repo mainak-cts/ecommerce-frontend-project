@@ -1,0 +1,114 @@
+import { NavLink } from "react-router-dom";
+import google_logo from "../assets/google_logo.png";
+import { useLogin } from "../hooks/useLogin";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Loading from "../components/Loading";
+import type { AxiosError } from "axios";
+import Swal from "sweetalert2";
+import type z from "zod";
+import { LoginFormSchema } from "../schema/forms";
+import type { LoginData } from "../shared/types/auth";
+
+export default function Login() {
+  const { mutate, isPending, reset, isError, error } = useLogin();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof LoginFormSchema>>({
+    resolver: zodResolver(LoginFormSchema),
+    mode: "all",
+  });
+
+  const handleFormSubmit = async (data: LoginData) => {
+    mutate(data);
+  };
+
+  if (isError) {
+    Swal.fire({
+      title: `${
+        ((error as AxiosError).response?.data as { message?: string })?.message
+      }`,
+      icon: "error",
+      draggable: true,
+    });
+    reset(); // Reset error state
+  }
+
+  return (
+    <>
+      <div className="login w-[400px] shadow mt-3 mb-3 border border-gray-400 bg-white px-4 pt-5 pb-3 rounded">
+        <form
+          className="flex flex-col gap-2"
+          onSubmit={handleSubmit(handleFormSubmit)}
+        >
+          <h1 className="text-center text-3xl text-blue-700 font-bold">
+            Log in
+          </h1>
+
+          <div className="username flex flex-col gap-1">
+            <label htmlFor="username">Username</label>
+            <input
+              {...register("username")}
+              className={`w-full py-1.5 px-2 border-2 ${
+                errors.username
+                  ? "border-red-500 focus:outline-red-300"
+                  : "border-blue-400 focus:outline-blue-300"
+              } rounded focus:outline-2`}
+              type="text"
+              name="username"
+              id="username"
+              placeholder="john123"
+            />
+            {errors.username && (
+              <p className="text-red-600">{errors.username.message}</p>
+            )}
+          </div>
+
+          <div className="password flex flex-col gap-1">
+            <label htmlFor="password">Password</label>
+            <input
+              {...register("password")}
+              type="password"
+              name="password"
+              id="password"
+              className={`w-full py-1.5 px-2 border-2 ${
+                errors.password
+                  ? "border-red-500 focus:outline-red-300"
+                  : "border-blue-400 focus:outline-blue-300"
+              } rounded focus:outline-2`}
+            />
+            {errors.password && (
+              <p className="text-red-600">{errors.password.message}</p>
+            )}
+          </div>
+          <div className="forgot-password flex flex-row-reverse text-[0.85rem] underline hover:no-underline">
+            <a href="#">Forgot password?</a>
+          </div>
+          <button
+            className="rounded p-2 cursor-pointer bg-blue-500 hover:bg-blue-600 transition-colors text-white flex justify-center items-center gap-2"
+            type="submit"
+          >
+            {isPending && <Loading width="5px" usedInBtn={true} />}
+            Login
+          </button>
+          <button
+            className="w-full p-2 rounded-3xl cursor-pointer mt-2 bg-blue-100 hover:bg-blue-200 transition-colors border-1 border-blue-500 flex justify-center items-center gap-2"
+            type="button"
+          >
+            <img src={google_logo} alt="google" className="w-[20px] h-[20px]" />
+            Login with Google
+          </button>
+          <div className="flex justify-center mt-2 gap-2 text-[0.85rem]">
+            Don't have an account?{" "}
+            <NavLink to="/register" className="underline hover:no-underline">
+              Sign up
+            </NavLink>
+          </div>
+        </form>
+      </div>
+    </>
+  );
+}

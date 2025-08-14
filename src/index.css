@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+#root{
+    max-width: 100vw;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(237, 237, 253);
+}
