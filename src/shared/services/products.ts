@@ -1,5 +1,5 @@
 import { axiosInstance } from "../../config/axiosconfig";
-import type { ProductType } from "../../models/ProductType";
+import type { ProductType } from "../types/product";
 
 export const getAllProducts = () => {
   return axiosInstance.get<{ products: ProductType[] }>("");

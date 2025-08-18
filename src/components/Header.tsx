@@ -1,6 +1,8 @@
 import {
   faCartShopping,
+  faFaceSadCry,
   faMagnifyingGlass,
+  faSearch,
   faShoppingBag,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
@@ -15,6 +17,11 @@ import {
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 import type { UserData } from "../shared/types/user";
+import { useQuery } from "@tanstack/react-query";
+import { useDebounce } from "use-debounce";
+import { getProductsBySearchQuery } from "../shared/services/products";
+import SearchRecommendation from "./SearchRecommendation";
+import { BeatLoader } from "react-spinners";
 
 function Header() {
   const {
@@ -28,7 +35,8 @@ function Header() {
   const navigate = useNavigate();
 
   const redirectToSearchPage = () => {
-    if (searchInput.trim().length > 0) navigate("/products/search");
+    if (searchInput.trim().length > 0)
+      navigate(`/products/search/${searchInput}`);
   };
 
   const enterToSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -83,6 +91,14 @@ function Header() {
     }
   }, []);
 
+  const [debouncedSearchInput] = useDebounce(searchInput, 500);
+
+  const { data: searchResults, isPending } = useQuery({
+    queryKey: ["search-recommendations", debouncedSearchInput],
+    queryFn: () => getProductsBySearchQuery(debouncedSearchInput),
+    enabled: !!debouncedSearchInput.trim(),
+  });
+
   return (
     <>
       <div className="header w-full px-6 py-4 flex justify-between items-center bg-white fixed top-0 left-0 z-50 shadow-md border-b border-gray-200">
@@ -125,6 +141,41 @@ function Header() {
               <FontAwesomeIcon icon={faXmark} />
             </button>
           ) : null}
+          {searchResults && searchResults.data.products.length > 0 ? (
+            <div id="recommendations" className="absolute w-full shadow">
+              {searchResults.data.products.slice(0, 5).map((product) => {
+                return (
+                  <SearchRecommendation
+                    key={product.id}
+                    productId={product.id.toString()}
+                    productName={product.title}
+                    productImage={product.images[0]}
+                  />
+                );
+              })}
+              <button
+                type="button"
+                onClick={redirectToSearchPage}
+                className="w-full cursor-pointer bg-white p-2 border-t-1 border-t-sky-100 flex gap-2 justify-center items-center text-[0.95rem] hover:bg-sky-100 transition-colors"
+              >
+                <FontAwesomeIcon icon={faSearch} className="text-sky-600" />
+                Show All
+              </button>
+            </div>
+          ) : isPending && debouncedSearchInput.trim().length ? (
+            <div className="absolute p-2 flex justify-center bg-white w-full shadow">
+              <div>
+                <BeatLoader size={"8px"} />
+              </div>
+            </div>
+          ) : (
+            debouncedSearchInput.trim().length > 0 && (
+              <p className="absolute p-2 bg-white w-full shadow flex items-center gap-2">
+                No match found
+                <FontAwesomeIcon icon={faFaceSadCry} className="text-sky-600" />
+              </p>
+            )
+          )}
         </div>
 
         <div className="btns flex items-center gap-4">

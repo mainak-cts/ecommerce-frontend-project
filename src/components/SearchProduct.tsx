@@ -2,14 +2,14 @@ import {
   getAllProducts,
   getProductsBySearchQuery,
 } from "../shared/services/products";
-import { useAppContext } from "../provider/ContextProvider";
 import Product from "./Product";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "./Loading";
 import type { ProductType } from "../shared/types/product";
+import { useParams } from "react-router-dom";
 
 export default function SearchProduct() {
-  const { searchInput } = useAppContext();
+  const { searchInput } = useParams();
 
   async function fetchData(): Promise<ProductType[]> {
     let data;

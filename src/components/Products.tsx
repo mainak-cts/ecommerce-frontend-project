@@ -44,7 +44,10 @@ export default function Products() {
           <div className="products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-center mb-4">
             {products.map((product) => {
               return (
-                <div className="transition-transform duration-200 hover:scale-105 hover:shadow-lg rounded-lg">
+                <div
+                  className="transition-transform duration-200 hover:scale-105 hover:shadow-lg rounded-lg"
+                  key={product.id}
+                >
                   <Product
                     key={product.id}
                     id={product.id}

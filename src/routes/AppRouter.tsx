@@ -45,7 +45,7 @@ const AppRouter = () => {
           ],
         },
         {
-          path: "/products/search",
+          path: "/products/search/:searchInput",
           element: (
             <Suspense fallback={<PageLoading />}>
               <SearchProduct />
