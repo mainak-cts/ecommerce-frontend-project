@@ -15,7 +15,7 @@ export default function Loading({
           : "w-full h-[50vh] flex justify-center items-center"
       }
     >
-      <BeatLoader size={width} color={usedInBtn ? "white" : "black"} />
+      <BeatLoader size={width} color={usedInBtn ? "white" : "#0187D5"} />
     </div>
   );
 }

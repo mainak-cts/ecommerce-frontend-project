@@ -165,7 +165,7 @@ function Header() {
           ) : isPending && debouncedSearchInput.trim().length ? (
             <div className="absolute p-2 flex justify-center bg-white w-full shadow">
               <div>
-                <BeatLoader size={"8px"} />
+                <BeatLoader size={"8px"} color="#0187D5" />
               </div>
             </div>
           ) : (

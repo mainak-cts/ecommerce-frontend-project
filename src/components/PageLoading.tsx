@@ -4,7 +4,7 @@ export default function PageLoading() {
   {
     return (
       <div className="w-full h-[50vh] flex justify-center items-center">
-        <GridLoader color="black" />
+        <GridLoader color="#0187D5" />
       </div>
     );
   }
