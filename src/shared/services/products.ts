@@ -1,19 +1,38 @@
+import { APP_CONFIG } from "../../config/appconfig";
 import { axiosInstance } from "../../config/axiosconfig";
-import type { ProductType } from "../types/product";
+import type { ProductResponse, ProductType } from "../types/product";
 
-export const getAllProducts = () => {
-  return axiosInstance.get<{ products: ProductType[] }>("");
-};
-
-export const getProductsBySearchQuery = (query: string) => {
-  return axiosInstance.get<{ products: ProductType[] }>(
-    `/search?q=${query.toLowerCase()}`
+export const getAllProducts = ({ pageParam }: { pageParam: number }) => {
+  return axiosInstance.get<ProductResponse>(
+    `?skip=${pageParam}&limit=${APP_CONFIG.API_PRODUCT_LIMIT}`
   );
 };
 
-export const getProductsByCategory = (category: string) => {
-  return axiosInstance.get<{ products: ProductType[] }>(
-    `/category/${category.toLowerCase()}`
+export const getProductsBySearchQuery = ({
+  pageParam = 0,
+  query,
+}: {
+  pageParam: number;
+  query: string;
+}) => {
+  return axiosInstance.get<ProductResponse>(
+    `/search?q=${query.toLowerCase()}&limit=${
+      APP_CONFIG.API_PRODUCT_LIMIT
+    }&skip=${pageParam}`
+  );
+};
+
+export const getProductsByCategory = ({
+  category,
+  pageParam,
+}: {
+  category: string;
+  pageParam: number;
+}) => {
+  return axiosInstance.get<ProductResponse>(
+    `/category/${category.toLowerCase()}?skip=${pageParam}&limit=${
+      APP_CONFIG.API_PRODUCT_LIMIT
+    }`
   );
 };
 

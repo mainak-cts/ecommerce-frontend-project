@@ -95,7 +95,8 @@ function Header() {
 
   const { data: searchResults, isPending } = useQuery({
     queryKey: ["search-recommendations", debouncedSearchInput],
-    queryFn: () => getProductsBySearchQuery(debouncedSearchInput),
+    queryFn: () =>
+      getProductsBySearchQuery({ pageParam: 0, query: debouncedSearchInput }),
     enabled: !!debouncedSearchInput.trim(),
   });
 

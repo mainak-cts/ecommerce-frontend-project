@@ -7,7 +7,7 @@ export interface ProductType {
   images: string[];
   description: string;
   rating: number;
-  reviews: ReviewType[]
+  reviews: ReviewType[];
   availabilityStatus: string;
 }
 
@@ -17,4 +17,11 @@ export interface ReviewType {
   date: Date;
   reviewerName: string;
   reviewerEmail: string;
+}
+
+export interface ProductResponse {
+  products: ProductType[];
+  limit: number;
+  skip: number;
+  total: number;
 }
