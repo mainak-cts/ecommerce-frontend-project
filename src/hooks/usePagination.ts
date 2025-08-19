@@ -1,12 +1,8 @@
 import { useState } from "react";
-import type OrderProductType from "../shared/types/order";
 
-export const usePagination = (
-  orderItems: OrderProductType[],
-  itemsPerPage: number
-) => {
+export const usePagination = <T>(items: T[], itemsPerPage: number) => {
   const [currPage, setCurrPage] = useState(0);
-  const totalPages = Math.ceil(orderItems.length / itemsPerPage);
+  const totalPages = Math.ceil(items.length / itemsPerPage);
   const lastIndex = currPage * itemsPerPage + itemsPerPage;
   const firstIndex = currPage * itemsPerPage;
 
