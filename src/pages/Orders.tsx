@@ -1,15 +1,21 @@
-import { useState } from "react";
+// import { useState } from "react";
 import OrderProduct from "../components/OrderProduct";
 import Pagination from "../components/Pagination";
 import { useAppContext } from "../provider/ContextProvider";
+import { usePagination } from "../hooks/usePagination";
 
 export default function Orders() {
   const { orderItems } = useAppContext();
-  const [currPage, setCurrPage] = useState(0);
-  const itemsPerPage = 5;
-  const totalPages = Math.ceil(orderItems.length / itemsPerPage);
-  const lastIndex = currPage * itemsPerPage + itemsPerPage;
-  const firstIndex = currPage * itemsPerPage;
+  // const [currPage, setCurrPage] = useState(0);
+  // const itemsPerPage = 5;
+  // const totalPages = Math.ceil(orderItems.length / itemsPerPage);
+  // const lastIndex = currPage * itemsPerPage + itemsPerPage;
+  // const firstIndex = currPage * itemsPerPage;
+
+  const { firstIndex, lastIndex, totalPages, setCurrPage } = usePagination(
+    orderItems,
+    5
+  );
 
   const handlePageCLick = (pageNumber: number) => {
     setCurrPage(pageNumber);

@@ -18,10 +18,10 @@ import { useEffect } from "react";
 import Swal from "sweetalert2";
 import type { UserData } from "../shared/types/user";
 import { useQuery } from "@tanstack/react-query";
-import { useDebounce } from "use-debounce";
 import { getProductsBySearchQuery } from "../shared/services/products";
 import SearchRecommendation from "./SearchRecommendation";
 import { BeatLoader } from "react-spinners";
+import { useDebounce } from "../hooks/useDebounce";
 
 function Header() {
   const {
@@ -91,7 +91,8 @@ function Header() {
     }
   }, []);
 
-  const [debouncedSearchInput] = useDebounce(searchInput, 500);
+  // const [debouncedSearchInput] = useDebounce(searchInput, 500);
+  const debouncedSearchInput = useDebounce(searchInput, 500);
 
   const { data: searchResults, isPending } = useQuery({
     queryKey: ["search-recommendations", debouncedSearchInput],
