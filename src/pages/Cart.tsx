@@ -39,7 +39,7 @@ export default function Cart() {
               );
             })}
           </div>
-          <div className="w-[90vw] flex flex-row-reverse mb-5 mt-2 items-center">
+          <div className="w-[85vw] flex flex-row-reverse mb-5 mt-2 items-center">
             <button
               className="rounded-lg px-4 py-2 bg-blue-600 hover:bg-blue-700 transition-colors cursor-pointer font-semibold text-white shadow"
               onClick={handleCartPlaceOrder}
