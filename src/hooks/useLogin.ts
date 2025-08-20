@@ -6,11 +6,15 @@ import {
 } from "../shared/services/auth";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useAppContext } from "../provider/ContextProvider";
+import { useDispatch } from "react-redux";
+import {
+  removeLoggedInUserDetails,
+  storeLoggedInUserDetails,
+} from "../redux/slices/auth";
 
 export const useLogin = () => {
   const navigate = useNavigate();
-  const { setLoggedInUser } = useAppContext();
+  const dispatch = useDispatch();
 
   return useMutation({
     mutationKey: ["login"],
@@ -19,10 +23,10 @@ export const useLogin = () => {
       async function fetchLoggedInUser() {
         try {
           const data = await getCurrentLoggedInUser();
-          setLoggedInUser(data.data);
+          dispatch(storeLoggedInUserDetails(data.data));
         } catch (error) {
           console.log(error);
-          setLoggedInUser(null);
+          dispatch(removeLoggedInUserDetails());
         }
       }
       Swal.fire({

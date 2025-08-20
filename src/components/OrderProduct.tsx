@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { useAppContext } from "../provider/ContextProvider";
 import type { ProductType } from "../shared/types/product";
 import { getProductById } from "../shared/services/products";
 import { useQuery } from "@tanstack/react-query";
 import CartProductLoading from "./CartProductLoading";
 import Swal from "sweetalert2";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { cancelOrder } from "../redux/slices/order";
+import type { RootState } from "../redux/store/store";
 
 export default function OrderProduct({
   productId,
@@ -14,10 +16,12 @@ export default function OrderProduct({
   productId: string;
   orderId: string;
 }) {
-  const { orderItems, setOrderItems } = useAppContext();
+  const orderItems = useSelector((state: RootState) => state.order.orderItems);
   const [quantity] = useState(
     orderItems.filter((item) => item.orderId === orderId)[0].quantity
   );
+
+  const dispatch = useDispatch();
 
   async function fetchData(): Promise<ProductType> {
     const data = await getProductById(productId);
@@ -48,7 +52,9 @@ export default function OrderProduct({
       confirmButtonText: "Cancel Order",
     }).then((result) => {
       if (result.isConfirmed) {
-        setOrderItems(orderItems.filter((item) => item.orderId !== orderId));
+        // setOrderItems(orderItems.filter((item) => item.orderId !== orderId));
+        dispatch(cancelOrder(productId));
+
         Swal.fire({
           title: "Order Cancelled!",
           text: "Your order has been deleted.",

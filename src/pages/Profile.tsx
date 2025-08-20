@@ -1,5 +1,4 @@
 import Swal from "sweetalert2";
-import { useAppContext } from "../provider/ContextProvider";
 import { handleLogOut } from "../shared/services/auth";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,9 +10,14 @@ import {
   faTicket,
 } from "@fortawesome/free-solid-svg-icons";
 import CartProductLoading from "../components/CartProductLoading";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../redux/store/store";
+import { removeLoggedInUserDetails } from "../redux/slices/auth";
 
 function Profile() {
-  const { loggedInUser: user, setLoggedInUser } = useAppContext();
+  const user = useSelector((state: RootState) => state.auth.loggedInUser);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const handleLogOutUser = () => {
     Swal.fire({
@@ -21,7 +25,7 @@ function Profile() {
       icon: "success",
       draggable: true,
     });
-    setLoggedInUser(null);
+    dispatch(removeLoggedInUserDetails());
     handleLogOut();
     navigate("/login");
   };
@@ -114,9 +118,9 @@ function Profile() {
             </div>
           </>
         ) : (
-          <p className="text-center font-bold text-xl">
+          <div className="text-center font-bold text-xl">
             <CartProductLoading />
-          </p>
+          </div>
         )}
       </div>
     </div>

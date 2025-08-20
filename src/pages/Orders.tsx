@@ -1,17 +1,19 @@
 // import { useState } from "react";
 import OrderProduct from "../components/OrderProduct";
 import Pagination from "../components/Pagination";
-import { useAppContext } from "../provider/ContextProvider";
 import { usePagination } from "../hooks/usePagination";
+import { useSelector } from "react-redux";
+import type { RootState } from "../redux/store/store";
 
 export default function Orders() {
-  const { orderItems } = useAppContext();
+  // const { orderItems } = useAppContext();
   // const [currPage, setCurrPage] = useState(0);
   // const itemsPerPage = 5;
   // const totalPages = Math.ceil(orderItems.length / itemsPerPage);
   // const lastIndex = currPage * itemsPerPage + itemsPerPage;
   // const firstIndex = currPage * itemsPerPage;
 
+  const orderItems = useSelector((state: RootState) => state.order.orderItems);
   const { firstIndex, lastIndex, totalPages, setCurrPage } = usePagination(
     orderItems,
     5

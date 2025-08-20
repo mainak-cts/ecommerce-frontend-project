@@ -1,12 +1,17 @@
 import Swal from "sweetalert2";
 import CartProduct from "../components/CartProduct";
-import { useAppContext } from "../provider/ContextProvider";
 import { v4 as uuidv4 } from "uuid";
 import type OrderProductType from "../shared/types/order";
+import { useDispatch, useSelector } from "react-redux";
+import { addOrdersFromCart } from "../redux/slices/order";
+import type { RootState } from "../redux/store/store";
+import { emptyCart } from "../redux/slices/cart";
 
 export default function Cart() {
-  const { cartItems, setCartItems, orderItems, setOrderItems } =
-    useAppContext();
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
+
+  const dispatch = useDispatch();
+
   const totalPrice = cartItems.reduce((val, item) => {
     return val + item.quantity * item.price;
   }, 0);
@@ -15,7 +20,7 @@ export default function Cart() {
     const newOrderItems: OrderProductType[] = cartItems.map((item) => {
       return { ...item, productId: item.id, orderId: uuidv4() };
     });
-    setOrderItems([...orderItems, ...newOrderItems]);
+    dispatch(addOrdersFromCart(newOrderItems));
 
     Swal.fire({
       icon: "success",
@@ -24,7 +29,7 @@ export default function Cart() {
       draggable: true,
       timer: 5000,
     });
-    setCartItems([]);
+    dispatch(emptyCart());
   };
 
   return (

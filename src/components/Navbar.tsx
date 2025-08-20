@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 export default function Navbar() {
   return (
     <>
-      <div className="nav-bar w-full flex flex-wrap items-center gap-2 bg-white shadow px-6 py-3 mt-18 border-b border-gray-200">
+      <div className="nav-bar w-full flex flex-wrap items-center gap-2 bg-white shadow px-6 py-3 mt-19 border-b border-gray-200">
         {[
           "All",
           "Smartphones",

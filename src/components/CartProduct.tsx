@@ -1,26 +1,39 @@
 import { useQuery } from "@tanstack/react-query";
 import { getProductById } from "../shared/services/products";
-import { useAppContext } from "../provider/ContextProvider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartProductLoading from "./CartProductLoading";
 import type { ProductType } from "../shared/types/product";
-import type CartProductType from "../shared/types/cart";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../redux/store/store";
+import {
+  addQuantityToCartProduct,
+  reduceQuantityFromCartProduct,
+  removeProductFromCart,
+} from "../redux/slices/cart";
 
 export default function CartProduct({
-  id,
-  index,
+  id: productId,
 }: {
   id: string;
   index: number;
 }) {
-  const { cartItems, setCartItems } = useAppContext();
-  const [quantity, setQuantity] = useState(
-    cartItems.filter((item) => item.id === id)[0].quantity
+  const cartItem = useSelector((state: RootState) =>
+    state.cart.cartItems.find((item) => item.id === productId)
   );
 
+  const [quantity, setQuantity] = useState(cartItem?.quantity || 1);
+
+  useEffect(() => {
+    if (cartItem) {
+      setQuantity(cartItem.quantity);
+    }
+  }, [cartItem]);
+
+  const dispatch = useDispatch();
+
   async function fetchData(): Promise<ProductType> {
-    const data = await getProductById(id);
+    const data = await getProductById(productId);
     return data.data;
   }
 
@@ -32,36 +45,21 @@ export default function CartProduct({
     isPending,
     error,
   } = useQuery({
-    queryKey: ["cart-item", id],
+    queryKey: ["cart-item", productId],
     queryFn: fetchData,
   });
 
   const handleRemoveItemFromCart = () => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+    // setCartItems(cartItems.filter((item) => item.id !== id));
+    dispatch(removeProductFromCart(productId));
   };
 
   const addQuantity = () => {
-    const cartItem: CartProductType | undefined = cartItems.find(
-      (item) => item.id === id
-    );
-    const items: CartProductType[] = [...cartItems];
-    cartItem!.quantity += 1;
-    items.splice(index, 1, cartItem!);
-    setCartItems(items);
-    setQuantity(cartItem!.quantity);
+    dispatch(addQuantityToCartProduct({ productId }));
   };
 
   const reduceQuantity = () => {
-    const cartItem: CartProductType | undefined = cartItems.find(
-      (item) => item.id === id
-    );
-    if (cartItem!.quantity > 1) {
-      const items: CartProductType[] = [...cartItems];
-      cartItem!.quantity -= 1;
-      items.splice(index, 1, cartItem!);
-      setCartItems(items);
-      setQuantity(cartItem!.quantity);
-    }
+    dispatch(reduceQuantityFromCartProduct({ productId }));
   };
 
   if (isError) {
@@ -73,7 +71,7 @@ export default function CartProduct({
         <CartProductLoading />
       ) : product ? (
         <div className="w-[85vw] min-h-[200px] flex gap-5 rounded-xl bg-white border border-gray-300 shadow px-3 py-0 items-center">
-          <NavLink to={`/products/${id}`}>
+          <NavLink to={`/products/${productId}`}>
             <div className="product-img w-70 h-70 flex-shrink-0 flex items-center justify-center">
               <img
                 src={product.images[0]}
@@ -83,7 +81,7 @@ export default function CartProduct({
           </NavLink>
           <div className="details flex flex-col gap-2 w-full justify-center">
             <NavLink
-              to={`/products/${id}`}
+              to={`/products/${productId}`}
               className="decoration-blue-700 hover:underline"
             >
               <p className="text-2xl font-bold text-blue-700">

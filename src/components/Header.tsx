@@ -8,13 +8,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAppContext } from "../provider/ContextProvider";
 import {
   getCurrentLoggedInUser,
   handleLogOut,
   isLoggedIn,
 } from "../shared/services/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import type { UserData } from "../shared/types/user";
 import { useQuery } from "@tanstack/react-query";
@@ -22,16 +21,28 @@ import { getProductsBySearchQuery } from "../shared/services/products";
 import SearchRecommendation from "./SearchRecommendation";
 import { BeatLoader } from "react-spinners";
 import { useDebounce } from "../hooks/useDebounce";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../redux/store/store";
+import { changeSearchInput } from "../redux/slices/search";
+import {
+  removeLoggedInUserDetails,
+  storeLoggedInUserDetails,
+} from "../redux/slices/auth";
 
 function Header() {
-  const {
-    searchInput,
-    setSearchInput,
-    loggedInUser,
-    setLoggedInUser,
-    cartItems,
-  } = useAppContext();
+  // const { loggedInUser, setLoggedInUser } = useAppContext();
+  const loggedInUser = useSelector(
+    (state: RootState) => state.auth.loggedInUser
+  );
+  const [isFocused, setIsFocused] = useState(false);
 
+  const searchInput = useSelector(
+    (state: RootState) => state.search.searchInput
+  );
+
+  const dispatch = useDispatch();
+
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
   const navigate = useNavigate();
 
   const redirectToSearchPage = () => {
@@ -73,17 +84,18 @@ function Header() {
           role: data.data.role,
         };
 
-        setLoggedInUser(user);
+        // setLoggedInUser(user);
+        dispatch(storeLoggedInUserDetails(user));
       } catch (err) {
         console.log(err);
         Swal.fire({
-          title: "Something went wrong!",
+          title: "Please log in again!",
           icon: "error",
           draggable: true,
         });
         handleLogOut();
         navigate("/login");
-        setLoggedInUser(null);
+        dispatch(removeLoggedInUserDetails());
       }
     }
     if (isLoggedIn()) {
@@ -120,9 +132,11 @@ function Header() {
         </div>
         <div className="search-bar w-[40vw] min-w-[200px] max-w-lg relative">
           <input
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setTimeout(() => setIsFocused(false), 501)}
             type="text"
             name="searchInput"
-            onChange={(e) => setSearchInput(e.target.value)}
+            onChange={(e) => dispatch(changeSearchInput(e.target.value))}
             onKeyDown={(e) => enterToSearch(e)}
             value={searchInput}
             placeholder="Search products..."
@@ -138,12 +152,14 @@ function Header() {
           {searchInput ? (
             <button
               className="absolute right-12 top-2 cursor-pointer rounded-full p-2transition-colors text-gray-700"
-              onClick={() => setSearchInput("")}
+              onClick={() => dispatch(changeSearchInput(""))}
             >
               <FontAwesomeIcon icon={faXmark} />
             </button>
           ) : null}
-          {searchResults && searchResults.data.products.length > 0 ? (
+          {isFocused &&
+          searchResults &&
+          searchResults.data.products.length > 0 ? (
             <div id="recommendations" className="absolute w-full shadow">
               {searchResults.data.products.slice(0, 5).map((product) => {
                 return (
@@ -171,6 +187,7 @@ function Header() {
               </div>
             </div>
           ) : (
+            isFocused &&
             debouncedSearchInput.trim().length > 0 && (
               <p className="absolute p-2 bg-white w-full shadow flex items-center gap-2">
                 No match found

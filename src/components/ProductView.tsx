@@ -11,17 +11,21 @@ import {
   faCartShopping,
   faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
-import { useAppContext } from "../provider/ContextProvider";
 import type { ProductType } from "../shared/types/product";
 import type CartProductType from "../shared/types/cart";
 import type OrderProductType from "../shared/types/order";
 import { v4 as uuidv4 } from "uuid";
+import { useDispatch, useSelector } from "react-redux";
+import { addOrder } from "../redux/slices/order";
+import type { RootState } from "../redux/store/store";
+import { addProductToCart } from "../redux/slices/cart";
 
 export default function ProductView() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { cartItems, setCartItems, orderItems, setOrderItems } =
-    useAppContext();
+
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
+  const dispatch = useDispatch();
 
   async function fetchData(): Promise<ProductType> {
     const data = await getProductById(id!);
@@ -41,7 +45,9 @@ export default function ProductView() {
         price: product!.price,
         quantity: 1,
       };
-      setOrderItems([...orderItems, newOrder]);
+
+      dispatch(addOrder(newOrder));
+
       Swal.fire({
         title: "Order placed!",
         text: `Total amount: $${product?.price}`,
@@ -69,7 +75,9 @@ export default function ProductView() {
         quantity: 1,
         price: product!.price,
       };
-      setCartItems([...cartItems, newCartItem]);
+      // setCartItems([...cartItems, newCartItem]);
+      dispatch(addProductToCart(newCartItem));
+
       Swal.fire({
         title: "Item added to cart!",
         icon: "success",

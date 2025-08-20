@@ -1,4 +1,6 @@
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { changeSearchInput } from "../redux/slices/search";
 
 export default function SearchRecommendations({
   productName,
@@ -10,7 +12,10 @@ export default function SearchRecommendations({
   productImage: string;
 }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const redirectToProduct = () => {
+    console.log("Clicked");
+    dispatch(changeSearchInput(productName));
     navigate(`/products/${productId}`);
   };
   return (
