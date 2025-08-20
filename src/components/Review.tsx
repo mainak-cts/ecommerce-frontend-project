@@ -9,7 +9,7 @@ export default function Review({
 }: ReviewType) {
   return (
     <>
-      <div className="review w-full bg-white border border-gray-200 shadow rounded-lg p-4 mb-4 flex flex-col gap-2">
+      <div className="review w-full bg-white border border-gray-200 shadow rounded-lg p-4 mb-1 flex flex-col gap-2">
         <div className="flex justify-between items-center">
           <span className="text-sm text-gray-500">
             {new Date(date).toLocaleString()}
