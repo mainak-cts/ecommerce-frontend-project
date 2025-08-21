@@ -14,7 +14,6 @@ import {
   isLoggedIn,
 } from "../shared/services/auth";
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import type { UserData } from "../shared/types/user";
 import { useQuery } from "@tanstack/react-query";
 import { getProductsBySearchQuery } from "../shared/services/products";
@@ -28,6 +27,7 @@ import {
   removeLoggedInUserDetails,
   storeLoggedInUserDetails,
 } from "../redux/slices/auth";
+import { Bounce, toast } from "react-toastify";
 
 function Header() {
   // const { loggedInUser, setLoggedInUser } = useAppContext();
@@ -88,10 +88,16 @@ function Header() {
         dispatch(storeLoggedInUserDetails(user));
       } catch (err) {
         console.log(err);
-        Swal.fire({
-          title: "Please log in again!",
-          icon: "error",
+        toast.error(`Please login again!`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
           draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
         });
         handleLogOut();
         navigate("/login");

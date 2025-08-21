@@ -27,7 +27,7 @@ export default function Cart() {
       title: `Order placed successfully!`,
       text: `Total amount: $${totalPrice}`,
       draggable: true,
-      timer: 5000,
+      timer: 3000,
     });
     dispatch(emptyCart());
   };

@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Loading from "../components/Loading";
 import type { AxiosError } from "axios";
-import Swal from "sweetalert2";
 import type z from "zod";
 import { LoginFormSchema } from "../schema/forms";
 import type { LoginData } from "../shared/types/auth";
+import { Bounce, toast } from "react-toastify";
 
 export default function Login() {
   const { mutate, isPending, reset, isError, error } = useLogin();
@@ -27,13 +27,21 @@ export default function Login() {
   };
 
   if (isError) {
-    Swal.fire({
-      title: `${
+    toast.error(
+      `${
         ((error as AxiosError).response?.data as { message?: string })?.message
       }`,
-      icon: "error",
-      draggable: true,
-    });
+      {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+        transition: Bounce,
+      }
+    );
     reset(); // Reset error state
   }
 

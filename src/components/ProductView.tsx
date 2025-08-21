@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addOrder } from "../redux/slices/order";
 import type { RootState } from "../redux/store/store";
 import { addProductToCart } from "../redux/slices/cart";
+import { Bounce, toast } from "react-toastify";
 
 export default function ProductView() {
   const navigate = useNavigate();
@@ -55,10 +56,15 @@ export default function ProductView() {
         draggable: true,
       });
     } else {
-      Swal.fire({
-        title: "Please login to place order!",
-        icon: "error",
+      toast.error(`Please login to place order!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
         draggable: true,
+        theme: "colored",
+        transition: Bounce,
       });
       navigate("/login");
     }
@@ -78,16 +84,26 @@ export default function ProductView() {
       // setCartItems([...cartItems, newCartItem]);
       dispatch(addProductToCart(newCartItem));
 
-      Swal.fire({
-        title: "Item added to cart!",
-        icon: "success",
+      toast.success(`Item added to cart!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
         draggable: true,
+        theme: "colored",
+        transition: Bounce,
       });
     } else {
-      Swal.fire({
-        title: "Please login to add the item in cart!",
-        icon: "error",
+      toast.error(`Please login to add the item in cart!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
         draggable: true,
+        theme: "colored",
+        transition: Bounce,
       });
       navigate("/login");
     }

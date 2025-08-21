@@ -1,4 +1,3 @@
-import Swal from "sweetalert2";
 import { handleLogOut } from "../shared/services/auth";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +12,7 @@ import CartProductLoading from "../components/CartProductLoading";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../redux/store/store";
 import { removeLoggedInUserDetails } from "../redux/slices/auth";
+import { Bounce, toast } from "react-toastify";
 
 function Profile() {
   const user = useSelector((state: RootState) => state.auth.loggedInUser);
@@ -20,10 +20,16 @@ function Profile() {
 
   const navigate = useNavigate();
   const handleLogOutUser = () => {
-    Swal.fire({
-      title: "Log out successful!",
-      icon: "success",
+    toast.success(`Log out successful!`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
       draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
     });
     dispatch(removeLoggedInUserDetails());
     handleLogOut();

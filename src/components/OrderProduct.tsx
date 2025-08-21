@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelOrder } from "../redux/slices/order";
 import type { RootState } from "../redux/store/store";
+import { Bounce, toast } from "react-toastify";
 
 export default function OrderProduct({
   productId,
@@ -55,10 +56,15 @@ export default function OrderProduct({
         // setOrderItems(orderItems.filter((item) => item.orderId !== orderId));
         dispatch(cancelOrder(productId));
 
-        Swal.fire({
-          title: "Order Cancelled!",
-          text: "Your order has been deleted.",
-          icon: "success",
+        toast.success(`Your order has been cancelled!`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+          transition: Bounce,
         });
       }
     });

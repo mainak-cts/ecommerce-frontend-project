@@ -11,6 +11,7 @@ import {
   reduceQuantityFromCartProduct,
   removeProductFromCart,
 } from "../redux/slices/cart";
+import { Bounce, toast } from "react-toastify";
 
 export default function CartProduct({
   id: productId,
@@ -52,6 +53,16 @@ export default function CartProduct({
   const handleRemoveItemFromCart = () => {
     // setCartItems(cartItems.filter((item) => item.id !== id));
     dispatch(removeProductFromCart(productId));
+    toast.success(`Item removed from cart!`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+      transition: Bounce,
+    });
   };
 
   const addQuantity = () => {
