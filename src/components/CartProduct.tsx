@@ -66,7 +66,9 @@ export default function CartProduct({
   };
 
   const addQuantity = () => {
-    dispatch(addQuantityToCartProduct({ productId }));
+    dispatch(
+      addQuantityToCartProduct({ productId, maxQuantity: product?.stock })
+    );
   };
 
   const reduceQuantity = () => {

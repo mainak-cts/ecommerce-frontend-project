@@ -25,7 +25,11 @@ const cartSlice = createSlice({
       const cartItem: CartProductType | undefined = state.cartItems.find(
         (item) => item.id === action.payload.productId
       );
-      cartItem!.quantity += 1;
+      if (
+        action.payload.maxQuantity &&
+        cartItem!.quantity < action.payload.maxQuantity
+      )
+        cartItem!.quantity += 1;
     },
     reduceQuantityFromCartProduct: (state, action) => {
       const cartItem: CartProductType | undefined = state.cartItems.find(

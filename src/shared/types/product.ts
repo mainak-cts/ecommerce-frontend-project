@@ -3,6 +3,7 @@ export interface ProductType {
   brand: string;
   category: string;
   title: string;
+  stock: number;
   price: number;
   images: string[];
   description: string;

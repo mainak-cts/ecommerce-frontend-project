@@ -25,7 +25,7 @@ export default function Cart() {
     Swal.fire({
       icon: "success",
       title: `Order placed successfully!`,
-      text: `Total amount: $${totalPrice}`,
+      text: `Total amount: $${totalPrice.toFixed(2)}`,
       draggable: true,
       timer: 3000,
     });
