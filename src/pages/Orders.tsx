@@ -19,7 +19,7 @@ export default function Orders() {
     5
   );
 
-  const handlePageCLick = (pageNumber: number) => {
+  const handlePageClick = (pageNumber: number) => {
     setCurrPage(pageNumber);
   };
   return (
@@ -44,7 +44,7 @@ export default function Orders() {
               lastIndex={lastIndex}
               totalProducts={orderItems.length}
               totalPages={totalPages}
-              handlePageClick={handlePageCLick}
+              handlePageClick={handlePageClick}
             />
           </div>
         </>

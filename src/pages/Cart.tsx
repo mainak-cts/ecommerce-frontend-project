@@ -34,7 +34,7 @@ export default function Cart() {
 
   return (
     <div className="w-full flex flex-col bg-white items-center">
-      <p className="text-3xl font-bold text-blue-700 text-center p-5">Cart</p>
+      <h1 className="text-3xl font-bold text-blue-700 text-center p-5">Cart</h1>
       {cartItems.length > 0 ? (
         <>
           <div className="cart-items flex flex-col gap-4 items-center mb-4 w-full max-w-2xl">

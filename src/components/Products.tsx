@@ -78,6 +78,7 @@ export default function Products() {
                     <Product
                       key={product.id}
                       id={product.id}
+                      stock={product.stock}
                       brand={product.brand}
                       title={product.title}
                       category={product.category}
