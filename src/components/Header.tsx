@@ -28,6 +28,7 @@ import {
   storeLoggedInUserDetails,
 } from "../redux/slices/auth";
 import { Bounce, toast } from "react-toastify";
+import { APP_CONFIG } from "../config/appconfig";
 
 function Header() {
   // const { loggedInUser, setLoggedInUser } = useAppContext();
@@ -132,7 +133,7 @@ function Header() {
                 icon={faShoppingBag}
                 className="mr-2 text-amber-500"
               />
-              ShopEase
+              {APP_CONFIG.APP_NAME}
             </h1>
           </NavLink>
         </div>

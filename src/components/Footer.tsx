@@ -1,6 +1,7 @@
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { APP_CONFIG } from "../config/appconfig";
 
 export default function Footer() {
   return (
@@ -14,7 +15,7 @@ export default function Footer() {
                   icon={faShoppingBag}
                   className="mr-2 text-amber-500"
                 />
-                ShopEase
+                {APP_CONFIG.APP_NAME}
               </h1>
             </Link>
           </div>
