@@ -13,7 +13,10 @@ function Product({
   return (
     <>
       <NavLink to={`/products/${id}`}>
-        <div className="bg-white border border-gray-400 p-5 w-full max-w-xs rounded-lg shadow hover:shadow-lg transition-transform duration-200 hover:scale-101 cursor-pointer flex flex-col items-center gap-3 hover:bg-blue-100">
+        <div
+          className="bg-white border border-gray-400 p-5 w-full max-w-xs rounded-lg shadow hover:shadow-lg transition-transform duration-200 hover:scale-101 cursor-pointer flex flex-col items-center gap-3 hover:bg-blue-100"
+          data-testid={`product-${id}`}
+        >
           <img
             src={images[0]}
             alt="product-img"

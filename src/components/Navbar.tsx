@@ -13,6 +13,7 @@ export default function Navbar() {
           "Furniture",
         ].map((label, index) => (
           <NavLink
+            data-testid={`link-${label}`}
             key={index}
             to={label === "All" ? "/" : `/products/category/${label}`}
             className={({ isActive }) =>
