@@ -6,7 +6,7 @@ export default function Reviews({ reviews }: { reviews: ReviewType[] }) {
     <>
       {reviews.length > 0 ? (
         <>
-          <h1 className="text-2xl font-bold mb-2 mt-2">Reviews</h1>
+          <h1 className="text-3xl font-bold mb-2 mt-2">Reviews</h1>
           {reviews.map((review, id) => {
             return (
               <Review

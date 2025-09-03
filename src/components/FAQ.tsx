@@ -3,7 +3,7 @@ import Accordion from "./Accordion";
 export default function FAQ() {
   return (
     <div className="w-full flex justify-evenly flex-col gap-2">
-      <h1 className="font-bold text-3xl m-2 text-center">FAQ</h1>
+      <h1 className="font-bold text-3xl m-2 text-center">FAQs</h1>
       <div className="accordions flex flex-col gap-2">
         <Accordion
           question="What is the return policy for this product?"
