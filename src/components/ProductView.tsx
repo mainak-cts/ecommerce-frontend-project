@@ -20,6 +20,7 @@ import { addOrder } from "../redux/slices/order";
 import type { RootState } from "../redux/store/store";
 import { addProductToCart } from "../redux/slices/cart";
 import { Bounce, toast } from "react-toastify";
+import FAQ from "./FAQ";
 
 export default function ProductView() {
   const navigate = useNavigate();
@@ -114,7 +115,7 @@ export default function ProductView() {
       {isPending ? (
         <Loading />
       ) : product ? (
-        <div className="w-full max-w-2xl mx-auto bg-white border border-gray-300 p-8 rounded-lg flex flex-col items-center gap-6 mt-8 shadow">
+        <div className="w-full max-w-2xl mx-auto bg-white border border-gray-300 p-8 rounded-lg flex flex-col items-center gap-6 mt-8 shadow mb-4">
           <img
             src={product.images[0]}
             alt="product-img"
@@ -173,6 +174,7 @@ export default function ProductView() {
             </button>
           </div>
           <Reviews reviews={product.reviews} />
+          <FAQ />
         </div>
       ) : (
         <h1 className="text-center font-bold mt-8 text-2xl text-red-500">
