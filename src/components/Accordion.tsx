@@ -25,9 +25,12 @@ export default function Accordion({
       </div>
 
       <div
-        className={`answertransition-all ${show && "px-2 p-1"} overflow-hidden`}
+        className={`answer transition-all px-2 ${
+          show && "p-1"
+        } duration-100 overflow-hidden`}
         style={{
           maxHeight: show ? "500px" : "0px",
+          opacity: show ? "1" : "0",
         }}
       >
         {answer}
