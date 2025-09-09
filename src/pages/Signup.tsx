@@ -1,5 +1,4 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import google_logo from "../assets/google_logo.png";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { SignUpFormSchema } from "../schema/forms";
@@ -8,6 +7,9 @@ import { handleSignUp } from "../shared/services/auth";
 import { useState } from "react";
 import Loading from "../components/Loading";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
+import { useLoginViaGoogle } from "../hooks/useLoginViaGoogle";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ export default function Signup() {
     resolver: zodResolver(SignUpFormSchema),
     mode: "all",
   });
+  const loginViaGoogle = useLoginViaGoogle();
 
   const handleFormSubmit = async (data: SignUpData) => {
     // Actual logic to be implemented
@@ -41,6 +44,11 @@ export default function Signup() {
       setLoading(false);
     }
   };
+
+  const handleLoginViaGoogle = (credentialResponse: CredentialResponse) => {
+    loginViaGoogle(credentialResponse);
+  };
+
   return (
     <>
       <div className="register w-[400px] border border-gray-400 mt-3 mb-3 shadow bg-white px-4 pt-5 pb-3 rounded">
@@ -148,10 +156,17 @@ export default function Signup() {
             {loading && <Loading width="5px" usedInBtn={true} />}
             Sign up
           </button>
-          <button className="w-full p-2 rounded-3xl cursor-pointer mt-2 bg-blue-100 hover:bg-blue-200 transition-colors border-1 border-blue-500 flex justify-center items-center gap-2">
-            <img src={google_logo} alt="google" className="w-[20px] h-[20px]" />
-            Sign up with Google
-          </button>
+          <div className="flex">
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                handleLoginViaGoogle(credentialResponse);
+              }}
+              onError={() => {
+                toast.error("Something went wrong!");
+              }}
+              width="370px"
+            />
+          </div>
           <div className="flex justify-center mt-2 gap-2 text-[0.85rem]">
             Already have an account?
             <NavLink to="/login" className="underline hover:no-underline">

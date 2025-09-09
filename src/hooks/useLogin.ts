@@ -29,11 +29,6 @@ export const useLogin = () => {
           dispatch(removeLoggedInUserDetails());
         }
       }
-      // Swal.fire({
-      //   title: `Welcome back ${data.data.firstName + " " + data.data.lastName}`,
-      //   icon: "success",
-      //   draggable: true,
-      // });
       toast.success(
         `Welcome back ${data.data.firstName + " " + data.data.lastName}`,
         {

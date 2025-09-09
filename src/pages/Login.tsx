@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import google_logo from "../assets/google_logo.png";
 import { useLogin } from "../hooks/useLogin";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,9 +8,12 @@ import type z from "zod";
 import { LoginFormSchema } from "../schema/forms";
 import type { LoginData } from "../shared/types/auth";
 import { Bounce, toast } from "react-toastify";
+import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
+import { useLoginViaGoogle } from "../hooks/useLoginViaGoogle";
 
 export default function Login() {
   const { mutate, isPending, reset, isError, error } = useLogin();
+  const loginViaGoogle = useLoginViaGoogle();
 
   const {
     register,
@@ -24,6 +26,10 @@ export default function Login() {
 
   const handleFormSubmit = async (data: LoginData) => {
     mutate(data);
+  };
+
+  const handleLoginViaGoogle = (credentialResponse: CredentialResponse) => {
+    loginViaGoogle(credentialResponse);
   };
 
   if (isError) {
@@ -55,7 +61,6 @@ export default function Login() {
           <h1 className="text-center text-3xl text-blue-700 font-bold">
             Log in
           </h1>
-
           <div className="username flex flex-col gap-1">
             <label htmlFor="username">Username</label>
             <input
@@ -74,7 +79,6 @@ export default function Login() {
               <p className="text-red-600">{errors.username.message}</p>
             )}
           </div>
-
           <div className="password flex flex-col gap-1">
             <label htmlFor="password">Password</label>
             <input
@@ -102,13 +106,17 @@ export default function Login() {
             {isPending && <Loading width="5px" usedInBtn={true} />}
             Login
           </button>
-          <button
-            className="w-full p-2 rounded-3xl cursor-pointer mt-2 bg-blue-100 hover:bg-blue-200 transition-colors border-1 border-blue-500 flex justify-center items-center gap-2"
-            type="button"
-          >
-            <img src={google_logo} alt="google" className="w-[20px] h-[20px]" />
-            Login with Google
-          </button>
+          <div className="flex">
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                handleLoginViaGoogle(credentialResponse);
+              }}
+              onError={() => {
+                toast.error("Something went wrong!");
+              }}
+              width="370px"
+            />
+          </div>
           <div className="flex justify-center mt-2 gap-2 text-[0.85rem]">
             Don't have an account?{" "}
             <NavLink to="/register" className="underline hover:no-underline">
