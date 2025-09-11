@@ -14,7 +14,6 @@ import {
   isLoggedIn,
 } from "../shared/services/auth";
 import { useEffect, useState } from "react";
-import type { UserData } from "../shared/types/user";
 import { useQuery } from "@tanstack/react-query";
 import { getProductsBySearchQuery } from "../shared/services/products";
 import SearchRecommendation from "./SearchRecommendation";
@@ -61,31 +60,7 @@ function Header() {
   useEffect(() => {
     async function getUserData() {
       try {
-        const data = await getCurrentLoggedInUser();
-
-        const user: UserData = {
-          id: data.data.id,
-          firstName: data.data.firstName,
-          lastName: data.data.lastName,
-          age: data.data.age,
-          gender: data.data.gender,
-          email: data.data.email,
-          phone: data.data.phone,
-          username: data.data.username,
-          birthDate: data.data.birthDate,
-          image: data.data.image,
-          address: {
-            address: data.data.address.address,
-            city: data.data.address.city,
-            state: data.data.address.state,
-            stateCode: data.data.address.stateCode,
-            postalCode: data.data.address.postalCode,
-            country: data.data.address.country,
-          },
-          role: data.data.role,
-        };
-
-        // setLoggedInUser(user);
+        const user = await getCurrentLoggedInUser();
         dispatch(storeLoggedInUserDetails(user));
       } catch (err) {
         console.log(err);
