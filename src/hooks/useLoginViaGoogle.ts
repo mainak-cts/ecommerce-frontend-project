@@ -4,7 +4,7 @@ import type { UserData } from "../shared/types/user";
 import { Bounce, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { handleJwt } from "../shared/services/auth";
+import { handleJwt, setLoggedInWithGoogle } from "../shared/services/auth";
 import { storeLoggedInUserDetails } from "../redux/slices/auth";
 
 type GoogleJwtPayload = {
@@ -64,6 +64,7 @@ export const useLoginViaGoogle = () => {
     });
     dispatch(storeLoggedInUserDetails(userData));
     handleJwt(credentialResponse.credential!);
+    setLoggedInWithGoogle();
     navigate("/");
   };
 };

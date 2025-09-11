@@ -114,7 +114,7 @@ export default function Login() {
               onError={() => {
                 toast.error("Something went wrong!");
               }}
-              width="370px"
+              width="368px"
             />
           </div>
           <div className="flex justify-center mt-2 gap-2 text-[0.85rem]">

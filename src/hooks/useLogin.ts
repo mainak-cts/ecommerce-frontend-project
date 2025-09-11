@@ -22,8 +22,8 @@ export const useLogin = () => {
     onSuccess: (data) => {
       async function fetchLoggedInUser() {
         try {
-          const data = await getCurrentLoggedInUser();
-          dispatch(storeLoggedInUserDetails(data.data));
+          const user = await getCurrentLoggedInUser();
+          dispatch(storeLoggedInUserDetails(user));
         } catch (error) {
           console.log(error);
           dispatch(removeLoggedInUserDetails());
