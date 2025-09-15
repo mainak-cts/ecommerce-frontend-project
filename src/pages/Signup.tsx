@@ -51,7 +51,7 @@ export default function Signup() {
 
   return (
     <>
-      <div className="register w-[400px] border border-gray-400 mt-3 mb-3 shadow bg-white px-4 pt-5 pb-3 rounded">
+      <div className="register w-[400px] shadow-lg mt-8 mb-8 border border-blue-200 bg-gradient-to-br from-white to-blue-50 px-8 pt-8 pb-6 rounded-xl flex flex-col gap-4 justify-center">
         <form
           className="flex flex-col gap-2"
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -164,7 +164,7 @@ export default function Signup() {
               onError={() => {
                 toast.error("Something went wrong!");
               }}
-              width="368px"
+              width="335px"
             />
           </div>
           <div className="flex justify-center mt-2 gap-2 text-[0.85rem]">

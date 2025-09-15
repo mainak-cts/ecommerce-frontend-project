@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,7 +53,7 @@ export default function Login() {
 
   return (
     <>
-      <div className="login w-[400px] shadow mt-3 mb-3 border border-gray-400 bg-white px-4 pt-5 pb-3 rounded">
+      <div className="login w-[400px] shadow-lg mt-8 mb-8 border border-blue-200 bg-gradient-to-br from-white to-blue-50 px-8 pt-8 pb-6 rounded-xl flex flex-col gap-4 justify-center">
         <form
           className="flex flex-col gap-2"
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -97,7 +97,7 @@ export default function Login() {
             )}
           </div>
           <div className="forgot-password flex flex-row-reverse text-[0.85rem] underline hover:no-underline">
-            <a href="#">Forgot password?</a>
+            <Link to="/forgot-password">Forgot password?</Link>
           </div>
           <button
             className="rounded p-2 cursor-pointer bg-blue-500 hover:bg-blue-600 transition-colors text-white flex justify-center items-center gap-2"
@@ -114,7 +114,7 @@ export default function Login() {
               onError={() => {
                 toast.error("Something went wrong!");
               }}
-              width="368px"
+              width="335px"
             />
           </div>
           <div className="flex justify-center mt-2 gap-2 text-[0.85rem]">

@@ -6,6 +6,7 @@ import PageLoading from "../components/PageLoading.tsx";
 import PageNotFound from "../pages/PageNotFound.tsx";
 import ProtectedRoutes from "../components/ProtectedRoutes.tsx";
 import Orders from "../pages/Orders.tsx";
+import ForgotPassword from "../pages/ForgotPassword.tsx";
 
 const Home = lazy(() => import("../pages/Home.tsx"));
 const Login = lazy(() => import("../pages/Login.tsx"));
@@ -70,6 +71,10 @@ const AppRouter = () => {
             {
               path: "/register",
               element: <Signup />,
+            },
+            {
+              path: "/forgot-password",
+              element: <ForgotPassword />,
             },
           ],
         },
