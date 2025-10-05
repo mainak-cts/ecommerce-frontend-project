@@ -14,7 +14,6 @@ export default function SearchRecommendations({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const redirectToProduct = () => {
-    console.log("Clicked");
     dispatch(changeSearchInput(productName));
     navigate(`/products/${productId}`);
   };

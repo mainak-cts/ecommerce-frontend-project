@@ -1,7 +1,7 @@
-import { jwtDecode } from "jwt-decode";
 import { axiosAuthInstance } from "../../config/axiosconfig";
 import type { LoginData, LoginResponseData } from "../types/auth";
 import type { UserData } from "../types/user";
+import axios from "axios";
 
 type GoogleJwtPayload = {
   sub?: string;
@@ -73,14 +73,14 @@ export const getCurrentLoggedInUser = async () => {
       role: data.data.role,
     };
   } else {
-    const decodedResponse = jwtDecode<GoogleJwtPayload>(getJwt()!);
+    const userData = await fetchUserInfo(getJwt()!);
     user = {
-      id: decodedResponse.sub ? Number(decodedResponse.sub) : 1,
-      username: decodedResponse.name ?? "dummy-username",
-      email: decodedResponse.email ?? "dummy@email.com",
-      image: decodedResponse.picture ?? "https://dummyimage.com/100x100",
+      id: userData.sub ? Number(userData.sub) : 1,
+      username: userData.name ?? "dummy-username",
+      email: userData.email ?? "dummy@email.com",
+      image: userData.picture ?? "https://dummyimage.com/100x100",
       role: "user", // Assuming default role
-      phone: (decodedResponse.phone as string) ?? "000-000-0000",
+      phone: (userData.phone as string) ?? "000-000-0000",
       address: {
         address: "123 Dummy St",
         city: "Dummy City",
@@ -89,11 +89,11 @@ export const getCurrentLoggedInUser = async () => {
         postalCode: "00000",
         country: "Dummy Country",
       },
-      firstName: decodedResponse.given_name ?? "Unknown",
-      lastName: decodedResponse.family_name ?? "Unknown",
-      age: decodedResponse.age ?? 18,
-      gender: decodedResponse.gender ?? "Unknown",
-      birthDate: decodedResponse.birthDate ?? "",
+      firstName: userData.given_name ?? "Unknown",
+      lastName: userData.family_name ?? "Unknown",
+      age: userData.age ?? 18,
+      gender: userData.gender ?? "Unknown",
+      birthDate: userData.birthDate ?? "",
     };
   }
 
@@ -119,4 +119,18 @@ export const setLoggedInWithGoogle = () => {
 export const isLoggedInWithGoogle = () => {
   const loggedInWithGoogle = localStorage.getItem("google-auth");
   return !!loggedInWithGoogle;
+};
+
+// Function to fetch user data from google API
+const fetchUserInfo = async (jwtToken: string): Promise<GoogleJwtPayload> => {
+  const userData = await axios.get(
+    "https://www.googleapis.com/oauth2/v3/userinfo",
+    {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    }
+  );
+
+  return userData.data;
 };
