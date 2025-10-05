@@ -7,9 +7,8 @@ import { handleSignUp } from "../shared/services/auth";
 import { useState } from "react";
 import Loading from "../components/Loading";
 import Swal from "sweetalert2";
-import { toast } from "react-toastify";
-import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 import { useLoginViaGoogle } from "../hooks/useLoginViaGoogle";
+import google_logo from "../assets/google_logo.png";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -45,8 +44,8 @@ export default function Signup() {
     }
   };
 
-  const handleLoginViaGoogle = (credentialResponse: CredentialResponse) => {
-    loginViaGoogle(credentialResponse);
+  const handleLoginViaGoogle = () => {
+    loginViaGoogle();
   };
 
   return (
@@ -157,15 +156,16 @@ export default function Signup() {
             Sign up
           </button>
           <div className="flex">
-            <GoogleLogin
-              onSuccess={(credentialResponse) => {
-                handleLoginViaGoogle(credentialResponse);
-              }}
-              onError={() => {
-                toast.error("Something went wrong!");
-              }}
-              width="368px"
-            />
+            <button
+              onClick={handleLoginViaGoogle}
+              type="button"
+              className="flex w-full items-center justify-center gap-3 px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-100 transition-colors cursor-pointer"
+            >
+              <img src={google_logo} width={25} />
+              <span className="text-sm text-gray-700 font-medium">
+                Sign in with Google
+              </span>
+            </button>
           </div>
           <div className="flex justify-center mt-2 gap-2 text-[0.85rem]">
             Already have an account?
