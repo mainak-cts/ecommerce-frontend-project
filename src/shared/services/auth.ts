@@ -73,6 +73,9 @@ export const getCurrentLoggedInUser = async () => {
       role: data.data.role,
     };
   } else {
+    // Instead of doing it, make a API call to get user info from backend
+    // GET https://www.googleapis.com/oauth2/v3/userinfo
+    // Authorization: Bearer ACCESS_TOKEN
     const decodedResponse = jwtDecode<GoogleJwtPayload>(getJwt()!);
     user = {
       id: decodedResponse.sub ? Number(decodedResponse.sub) : 1,
